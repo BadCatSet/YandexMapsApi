@@ -14,7 +14,7 @@ class MainWindow(QMainWindow):
         self.zoom = 5
         self.delta_press = 0.00001
         self.lantitude = 90
-
+# ghbdtn
     def get_map(self):
         response = requests.get('https://static-maps.yandex.ru/1.x/', params={'z': self.z})
 
