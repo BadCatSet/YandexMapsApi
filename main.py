@@ -107,7 +107,8 @@ class MainWindow(QMainWindow):
         pixmap.load('tmp.png')
 
         self.g_map.setPixmap(pixmap)
-        self.inform_map.setText(f'{geo_locate(self.g_search.text(), inform_map=True)}')
+        if geo_locate(self.g_search.text(), inform_map=True) != (-1,-1):
+            self.inform_map.setText(f'{geo_locate(self.g_search.text(), inform_map=True)}')
 
     def search(self):
         x, y = geo_locate(self.g_search.text())
