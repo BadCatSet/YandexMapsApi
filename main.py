@@ -13,6 +13,7 @@ class MainWindow(QMainWindow):
     g_layer1: QPushButton
     g_layer2: QPushButton
     g_layer3: QPushButton
+    g_reset: QPushButton
     press_delta = 5
 
     # noinspection PyUnresolvedReferences
@@ -30,6 +31,7 @@ class MainWindow(QMainWindow):
         self.g_layer1.clicked.connect(self.set_layer1)
         self.g_layer2.clicked.connect(self.set_layer2)
         self.g_layer3.clicked.connect(self.set_layer3)
+        self.g_reset.clicked.connect(self.reset)
 
         self.refresh_map()
 
@@ -43,6 +45,10 @@ class MainWindow(QMainWindow):
 
     def set_layer3(self):
         self.map_l = 'map'
+        self.refresh_map()
+
+    def reset(self):
+        self.map_point = ''
         self.refresh_map()
 
     def keyPressEvent(self, event):
