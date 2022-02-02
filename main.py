@@ -1,10 +1,10 @@
 import sys
 
+import requests
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QMainWindow, QPushButton
-import requests
 
 
 class MainWindow(QMainWindow):
@@ -27,6 +27,10 @@ class MainWindow(QMainWindow):
         self.map_key = ''
         self.map_point = ''
 
+        self.inform_map = QLabel(self)
+        self.inform_map.setText("")
+        self.inform_map.resize(1000, 20)
+        self.inform_map.move(80, 500)
         self.g_search.returnPressed.connect(self.search)
         self.g_layer1.clicked.connect(self.set_layer1)
         self.g_layer2.clicked.connect(self.set_layer2)
@@ -48,6 +52,8 @@ class MainWindow(QMainWindow):
         self.refresh_map()
 
     def reset(self):
+        self.g_search.clear()
+        self.inform_map.clear()
         self.map_point = ''
         self.refresh_map()
 
@@ -60,7 +66,6 @@ class MainWindow(QMainWindow):
         elif key == Qt.Key_PageDown:
             if self.map_zoom > 0:
                 self.map_zoom -= 1
-
         elif key == Qt.Key_Escape:
             self.g_map.setFocus()
 
@@ -77,7 +82,7 @@ class MainWindow(QMainWindow):
                 self.map_ll[1] += self.press_delta
         elif key == Qt.Key_Down:
             if self.map_ll[1] - self.press_delta > -90:
-                self.map_ll[1] -= self.press_delta
+                self.map_ll[1] -= self.press_deltav
         else:
             return
 
@@ -102,6 +107,7 @@ class MainWindow(QMainWindow):
         pixmap.load('tmp.png')
 
         self.g_map.setPixmap(pixmap)
+        self.inform_map.setText(f'{geo_locate(self.g_search.text(), inform_map=True)}')
 
     def search(self):
         x, y = geo_locate(self.g_search.text())
@@ -112,7 +118,7 @@ class MainWindow(QMainWindow):
         self.refresh_map()
 
 
-def geo_locate(name):
+def geo_locate(name, inform_map=False):
     params = {
         'apikey': '40d1649f-0493-4b70-98ba-98533de7710b',
         'geocode': name,
@@ -126,6 +132,8 @@ def geo_locate(name):
     if not geo_objects:
         print('error: could not get geo_objects')
         return -1, -1
+    if inform_map:
+        return geo_objects[0]["GeoObject"]['metaDataProperty']['GeocoderMetaData']['text']
     return list(map(float, geo_objects[0]["GeoObject"]["Point"]["pos"].split()))
 
 
