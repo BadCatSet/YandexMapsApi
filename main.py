@@ -27,10 +27,6 @@ class MainWindow(QMainWindow):
         self.map_key = ''
         self.map_point = ''
 
-        self.inform_map = QLabel(self)
-        self.inform_map.setText("")
-        self.inform_map.resize(1000, 20)
-        self.inform_map.move(80, 500)
         self.g_search.returnPressed.connect(self.search)
         self.g_layer1.clicked.connect(self.set_layer1)
         self.g_layer2.clicked.connect(self.set_layer2)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1035</width>
-    <height>719</height>
+    <width>926</width>
+    <height>649</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,42 +18,14 @@
     <item row="0" column="0">
      <widget class="QLineEdit" name="g_search"/>
     </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="g_reset">
-      <property name="text">
-       <string>сброс</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="5">
-     <widget class="QPushButton" name="g_layer3">
-      <property name="text">
-       <string>гибрид</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="g_map">
-      <property name="text">
-       <string>TextLabel</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="3">
+    <item row="2" column="5">
      <widget class="QPushButton" name="g_layer1">
       <property name="text">
        <string>смема</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="4">
-     <widget class="QPushButton" name="g_layer2">
-      <property name="text">
-       <string>спутник</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
+    <item row="0" column="2" rowspan="3">
      <spacer name="g_spacer1">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -69,20 +41,7 @@
       </property>
      </spacer>
     </item>
-    <item row="2" column="0" colspan="5">
-     <spacer name="g_spacer2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="1" column="3" colspan="3">
+    <item row="3" column="1" rowspan="3" colspan="5">
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -95,6 +54,54 @@
       </property>
      </spacer>
     </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="g_reset">
+      <property name="text">
+       <string>сброс</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="5">
+     <widget class="QPushButton" name="g_layer3">
+      <property name="text">
+       <string>гибрид</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="g_map">
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="5">
+     <widget class="QPushButton" name="g_layer2">
+      <property name="text">
+       <string>спутник</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <spacer name="g_spacer2">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="inform_map">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -102,7 +109,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1035</width>
+     <width>926</width>
      <height>21</height>
     </rect>
    </property>
