@@ -1,15 +1,18 @@
 import sys
 
-import requests
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QMainWindow, QPushButton
+import requests
 
 
 class MainWindow(QMainWindow):
     g_map: QLabel
     g_search: QLineEdit
+    g_layer1: QPushButton
+    g_layer2: QPushButton
+    g_layer3: QPushButton
     press_delta = 5
 
     def __init__(self):
@@ -21,29 +24,24 @@ class MainWindow(QMainWindow):
         self.map_l = 'map'
         self.map_key = ''
 
+        # noinspection PyUnresolvedReferences
         self.g_search.returnPressed.connect(self.search)
+        self.g_layer1.clicked.connect(self.set_layer1)
+        self.g_layer2.clicked.connect(self.set_layer2)
+        self.g_layer3.clicked.connect(self.set_layer3)
 
         self.refresh_map()
-        self.btn_1, self.btn_2, self.btn_3 = QPushButton('схема', self), QPushButton('спутник',
-                                                                                     self), QPushButton(
-            'гибрид', self)
-        self.btn_1.resize(100, 100)
-        self.btn_1.move(650, 50)
-        self.btn_1.clicked.connect(self.layer)
-        self.btn_2.resize(100, 100)
-        self.btn_2.move(650, 200)
-        self.btn_2.clicked.connect(self.layer)
-        self.btn_3.resize(100, 100)
-        self.btn_3.move(650, 350)
-        self.btn_3.clicked.connect(self.layer)
 
-    def layer(self):
-        if self.sender().text() == 'схема':
-            self.map_l = 'skl'
-        if self.sender().text() == 'спутник':
-            self.map_l = 'sat'
-        if self.sender().text() == 'гибрид':
-            self.map_l = 'map'
+    def set_layer1(self):
+        self.map_l = 'skl'
+        self.refresh_map()
+
+    def set_layer2(self):
+        self.map_l = 'sat'
+        self.refresh_map()
+
+    def set_layer3(self):
+        self.map_l = 'map'
         self.refresh_map()
 
     def keyPressEvent(self, event):
@@ -97,7 +95,11 @@ class MainWindow(QMainWindow):
         self.g_map.setPixmap(pixmap)
 
     def search(self):
-        print(geo_locate(self.g_search.text()))
+        x, y = geo_locate(self.g_search.text())
+        if x == -1 or y == -1:
+            return
+        self.map_ll = [x, y]
+        self.refresh_map()
 
 
 def geo_locate(name):
@@ -114,7 +116,7 @@ def geo_locate(name):
     if not geo_objects:
         print('error: could not get geo_objects')
         return -1, -1
-    return geo_objects[0]["GeoObject"]["Point"]["pos"]
+    return list(map(float, geo_objects[0]["GeoObject"]["Point"]["pos"].split()))
 
 
 def clip(v, _min, _max):
