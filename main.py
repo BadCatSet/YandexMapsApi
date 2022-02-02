@@ -1,10 +1,10 @@
 import sys
 
+import requests
 from PyQt5 import uic
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QMainWindow
-import requests
+from PyQt5.QtWidgets import QApplication, QLabel, QLineEdit, QMainWindow, QPushButton
 
 
 class MainWindow(QMainWindow):
@@ -23,6 +23,27 @@ class MainWindow(QMainWindow):
 
         self.g_search.returnPressed.connect(self.search)
 
+        self.refresh_map()
+        self.btn_1, self.btn_2, self.btn_3 = QPushButton('схема', self), QPushButton('спутник',
+                                                                                     self), QPushButton(
+            'гибрид', self)
+        self.btn_1.resize(100, 100)
+        self.btn_1.move(650, 50)
+        self.btn_1.clicked.connect(self.layer)
+        self.btn_2.resize(100, 100)
+        self.btn_2.move(650, 200)
+        self.btn_2.clicked.connect(self.layer)
+        self.btn_3.resize(100, 100)
+        self.btn_3.move(650, 350)
+        self.btn_3.clicked.connect(self.layer)
+
+    def layer(self):
+        if self.sender().text() == 'схема':
+            self.map_l = 'skl'
+        if self.sender().text() == 'спутник':
+            self.map_l = 'sat'
+        if self.sender().text() == 'гибрид':
+            self.map_l = 'map'
         self.refresh_map()
 
     def keyPressEvent(self, event):
