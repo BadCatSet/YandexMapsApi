@@ -15,6 +15,7 @@ class MainWindow(QMainWindow):
     g_layer3: QPushButton
     press_delta = 5
 
+    # noinspection PyUnresolvedReferences
     def __init__(self):
         super().__init__()
         uic.loadUi('main_window.ui', self)
@@ -23,8 +24,8 @@ class MainWindow(QMainWindow):
         self.map_ll = [37.977751, 55.757718]
         self.map_l = 'map'
         self.map_key = ''
+        self.map_point = ''
 
-        # noinspection PyUnresolvedReferences
         self.g_search.returnPressed.connect(self.search)
         self.g_layer1.clicked.connect(self.set_layer1)
         self.g_layer2.clicked.connect(self.set_layer2)
@@ -82,6 +83,8 @@ class MainWindow(QMainWindow):
             "l": self.map_l,
             'z': self.map_zoom,
         }
+        if self.map_point:
+            map_params['pt'] = self.map_point
         response = requests.get('https://static-maps.yandex.ru/1.x/', params=map_params)
         if not response:
             print('error: could not get map')
@@ -99,6 +102,7 @@ class MainWindow(QMainWindow):
         if x == -1 or y == -1:
             return
         self.map_ll = [x, y]
+        self.map_point = f'{x},{y},comma'
         self.refresh_map()
 
 
