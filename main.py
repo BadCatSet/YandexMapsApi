@@ -1,6 +1,7 @@
 import sys
 
 from PyQt5 import uic
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow
 import requests
@@ -22,14 +23,11 @@ class MainWindow(QMainWindow):
         self.refresh_map()
 
     def keyPressEvent(self, event):
-        """
-        if event.key() == Qt.Key_PageUp and self.zoom < 17:
-            self.zoom += 1
-        if event.key() == Qt.Key_PageDown and self.zoom > 0:
-            self.zoom -= 1
+        if event.key() == Qt.Key_PageUp and self.map_zoom < 17:
+            self.map_zoom += 1
+        if event.key() == Qt.Key_PageDown and self.map_zoom > 0:
+            self.map_zoom -= 1
         self.refresh_map()
-        """
-        pass
 
     def refresh_map(self):
         map_params = {
