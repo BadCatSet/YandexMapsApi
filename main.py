@@ -1,11 +1,9 @@
 import sys
-from io import BytesIO
 
-import requests
-from PIL import Image
-from PyQt5 import Qt, uic
+from PyQt5 import uic
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow
+import requests
 
 
 class MainWindow(QMainWindow):
@@ -13,40 +11,48 @@ class MainWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        uic.loadUi('main_window.ui')
-        self.zoom = 5
-        self.delta = 0.00001
-        self.lantitude = 90
-        self.ll = '37.677751,55.757718'
-        self.map_params = {
-            "ll": self.ll,
-            "spn": f'{self.delta},{self.delta}',
-            "l": "map"
-        }
-        self.initUI()
-        self.get_map()
+        uic.loadUi('main_window.ui', self)
+        self.press_delta = 0.00001
 
-    def initUI(self):
-        self.setGeometry(100, 100, *(600, 400))
-        self.setWindowTitle('Отображение карты')
+        self.map_zoom = 5
+        self.map_ll = [37.977751, 55.757718]
+        self.map_l = 'map'
+        self.map_key = ''
+
+        self.refresh_map()
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_PageUp:
-            if self.zoom != 16:
-                self.zoom += 1
-        if event.key() == Qt.Key_PageDown:
-            if self.zoom != 0:
-                self.zoom -= 1
+        """
+        if event.key() == Qt.Key_PageUp and self.zoom < 17:
+            self.zoom += 1
+        if event.key() == Qt.Key_PageDown and self.zoom > 0:
+            self.zoom -= 1
+        self.refresh_map()
+        """
+        pass
 
-    def get_map(self):
+    def refresh_map(self):
+        map_params = {
+            "ll": ','.join(map(str, self.map_ll)),
+            "l": self.map_l,
+            'z': self.map_zoom
+        }
         response = requests.get('https://static-maps.yandex.ru/1.x/',
-                                params=self.map_params)
+                                params=map_params)
+        with open('tmp.png', mode='wb') as tmp:
+            tmp.write(response.content)
 
-        self.pixmap = QPixmap(Image.open(BytesIO(response.content)))
-        self.image = QLabel(self)
-        self.image.move(0, 0)
-        self.image.resize(600, 450)
-        self.image.setPixmap(self.pixmap)
+        pixmap = QPixmap()
+        pixmap.load('tmp.png')
+        self.g_map.setPixmap(pixmap)
+
+
+def clip(v, _min, _max):
+    if v < _min:
+        return _min
+    if v > _max:
+        return _max
+    return v
 
 
 app = QApplication(sys.argv)
